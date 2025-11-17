@@ -8,6 +8,6 @@ public interface TransactionRepoInterface {
     
     public List<Transaction> getAllTransactions();
 
-    public boolean addTransaction(String date, String name, String status, int amount, String number);
+    public String addTransaction(Transaction transaction);
     
 }
