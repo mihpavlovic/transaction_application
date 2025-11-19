@@ -16,6 +16,6 @@ export class TransactionService {
   }
 
   addTransaction(transaction: TransactionModel) {
-    return this.http.post<String>(this.url, transaction);
+    return this.http.post(this.url, transaction, {responseType: 'text'});
   }
 }
