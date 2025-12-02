@@ -2,11 +2,11 @@ import { Component, inject, OnInit } from '@angular/core';
 import { TransactionModel } from '../../models/transaction';
 import { TransactionService } from '../../services/transaction-service';
 import { CommonModule } from '@angular/common';
-import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 
 @Component({
   selector: 'app-transaction-component',
-  imports: [CommonModule, ReactiveFormsModule],
+  imports: [CommonModule, ReactiveFormsModule, FormsModule],
   templateUrl: './transaction-component.html',
   styleUrl: './transaction-component.css',
 })
@@ -14,6 +14,8 @@ export class TransactionComponent implements OnInit{
 
   allTransactions: TransactionModel[] = [];
   transactionForm!: FormGroup;
+  searchText: String = "";
+  searchedTransactions: TransactionModel[] = [];
 
   private transactionService = inject(TransactionService);
   private formBuilder = inject(FormBuilder);
@@ -25,11 +27,12 @@ export class TransactionComponent implements OnInit{
       accountHolderName: ['', Validators.required],
       amount: ['', [Validators.required, Validators.min(0.01)]],
     });
-
+    
     this.transactionService.getAllTransactions().subscribe(
       data => {
         this.allTransactions = data;
         console.log(this.allTransactions[0].accountHolderName);
+        this.searchedTransactions = data;
       }
     )
   }
@@ -61,6 +64,13 @@ export class TransactionComponent implements OnInit{
       }
     );
 
+  }
+
+  searchTransactions(){
+    const text = this.searchText.toLowerCase();
+    this.searchedTransactions = this.allTransactions.filter(
+      tr => tr.accountHolderName.toLowerCase().includes(text)
+    );
   }
 
 }

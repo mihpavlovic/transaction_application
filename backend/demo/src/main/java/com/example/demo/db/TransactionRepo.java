@@ -9,6 +9,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Comparator;
 import java.util.List;
 import java.util.regex.Pattern;
 
@@ -37,6 +38,8 @@ public class TransactionRepo implements TransactionRepoInterface {
         } catch (Exception e) {
             throw new RuntimeException("Error reading CSV", e);
         }
+
+        list.sort((s1, s2) -> s1.getTransactionDate().compareTo(s2.getTransactionDate()));
 
         return list;
     }
